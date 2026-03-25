@@ -79,7 +79,7 @@ fi
 echo "Detected board: $fqbn on port $port"
 
 echo "Compiling $ino_file"
-arduino-cli compile --verbose --fqbn "$fqbn" "$ino_file"
+arduino-cli compile --verbose --fqbn "$fqbn" --libraries "$project_dir" "$ino_file"
 
 echo "Uploading $ino_file to $fqbn on $port"
 arduino-cli upload --port "$port" --fqbn "$fqbn" "$ino_file"

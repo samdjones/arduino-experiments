@@ -52,6 +52,12 @@ void setup() {
 
   buildWalk();
   seq.begin();
+ 
+        seq.setEasing(SS_SINE);
+        seq.setSpeed(1.0f);
+        seq.startByName("walk");
+        Serial.println(F("-> walk started"));
+
 
   Serial.println(F("ServoSequencer v1.2 ready."));
   Serial.println(F("  g = start walk   h = halt (graceful)"));

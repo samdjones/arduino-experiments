@@ -10,8 +10,8 @@
 // -------------------------------------------------------------
 
 #define SS_NUM_SERVOS     3
-#define SS_MAX_FRAMES     64
-#define SS_MAX_SEQUENCES  16
+#define SS_MAX_FRAMES     10
+#define SS_MAX_SEQUENCES  2
 
 // Global easing mode - applies to all frames, changeable anytime
 enum SS_Easing {
