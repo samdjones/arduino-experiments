@@ -26,15 +26,12 @@ void buildWalk() {
   seq.beginSequence("walk");
 
   // -- Start frame: rise to walking stance (played once) ------
-  f[0]=70; f[1]=80; f[2]=70;
+  f[0]=90; f[1]=90; f[2]=90;
   seq.setStartFrame(500, f);
 
   // -- Loop body: walking cycle --------------------------------
-  f[0]=60;  f[1]=90; f[2]=120; seq.addFrame(400, f);  // right lifts
-  f[0]=60;  f[1]=90; f[2]=90;  seq.addFrame(300, f);  // right plants
-  f[0]=120; f[1]=90; f[2]=60;  seq.addFrame(400, f);  // left lifts
-  f[0]=90;  f[1]=90; f[2]=60;  seq.addFrame(300, f);  // left plants
-  f[0]=90;  f[1]=90; f[2]=90;  seq.addFrame(200, f);  // neutral
+  f[0]=180;  f[1]=180; f[2]=180; seq.addFrame(700, f);
+  f[0]=0;  f[1]=0; f[2]=0;  seq.addFrame(700, f);
 
   // -- Stop frame: settle back to rest (played once) ----------
   f[0]=90; f[1]=90; f[2]=90;
@@ -46,9 +43,9 @@ void buildWalk() {
 void setup() {
   Serial.begin(115200);
 
-  seq.configServo(0,  2,  30, 150, 90);
-  seq.configServo(1,  3,  45, 135, 90);
-  seq.configServo(2,  4,  30, 150, 90);
+  seq.configServo(0,  2,  0, 180, 90);
+  seq.configServo(1,  3,  0, 180, 90);
+  seq.configServo(2,  4,  0, 180, 90);
 
   buildWalk();
   seq.begin();
