@@ -30,8 +30,8 @@ void buildWalk() {
   seq.setStartFrame(500, f);
 
   // -- Loop body: walking cycle --------------------------------
-  f[0]=180;  f[1]=180; f[2]=180; seq.addFrame(700, f);
-  f[0]=0;  f[1]=0; f[2]=0;  seq.addFrame(700, f);
+  f[0]=10;  f[1]=170; f[2]=170; seq.addFrame(700, f);
+  f[0]=170;  f[1]=10; f[2]=10;  seq.addFrame(700, f);
 
   // -- Stop frame: settle back to rest (played once) ----------
   f[0]=90; f[1]=90; f[2]=90;
@@ -41,20 +41,21 @@ void buildWalk() {
 }
 
 void setup() {
+  // Start serial for debugging and command input
   Serial.begin(115200);
 
-  seq.configServo(0,  2,  0, 180, 90);
-  seq.configServo(1,  3,  0, 180, 90);
-  seq.configServo(2,  4,  0, 180, 90);
+  // configServo(servoIndex, pin, minPulse, maxPulse, restPos)
+  seq.configServo(0,  9,  10, 170, 90);
+  seq.configServo(1,  10,  10, 170, 90);
+  seq.configServo(2,  11,  10, 170, 90);
 
   buildWalk();
   seq.begin();
  
-        seq.setEasing(SS_SINE);
-        seq.setSpeed(1.0f);
-        seq.startByName("walk");
-        Serial.println(F("-> walk started"));
-
+  // seq.setEasing(SS_SINE);
+  // seq.setSpeed(1.0f);
+  // seq.startByName("walk");
+  // Serial.println(F("-> walk started"));
 
   Serial.println(F("ServoSequencer v1.2 ready."));
   Serial.println(F("  g = start walk   h = halt (graceful)"));

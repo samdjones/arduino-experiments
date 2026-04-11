@@ -1,53 +1,34 @@
 #include <Arduino.h>
 
-/*
-  Button
-
-  Turns on and off a light emitting diode(LED) connected to digital pin 13,
-  when pressing a pushbutton attached to pin 2.
-
-  The circuit:
-  - LED attached from pin 13 to ground through 220 ohm resistor
-  - pushbutton attached to pin 2 from +5V
-  - 10K resistor attached to pin 2 from ground
-
-  - Note: on most Arduinos there is already an LED on the board
-    attached to pin 13.
-
-  created 2005
-  by DojoDave <http://www.0j0.org>
-  modified 30 Aug 2011
-  by Tom Igoe
-
-  This example code is in the public domain.
-
-  https://docs.arduino.cc/built-in-examples/digital/Button/
-*/
-
 // constants won't change. They're used here to set pin numbers:
-const int buttonPin = 2;  // the number of the pushbutton pin
-const int ledPin = LED_BUILTIN;    // the number of the LED pin
+const int BUTTON = 2;
+const int LED = LED_BUILTIN; 
 
 // variables will change:
-int buttonState = 0;  // variable for reading the pushbutton status
+bool runState = false;
+const long DEBOUNCE_DELAY = 50; // debounce delay in milliseconds
+unsigned long lastDebounceTime = millis(); // the last time the button state was toggled
+bool lastButtonState = false;
 
-void setup() {
-  // initialize the LED pin as an output:
-  pinMode(ledPin, OUTPUT);
-  // initialize the pushbutton pin as an input:
-  pinMode(buttonPin, INPUT);
+// setup() runs once when you press reset or power the board
+void  setup()
+{
+  Serial.begin(9600);
+  pinMode(BUTTON, INPUT);
+  pinMode(LED, OUTPUT);
 }
 
-void loop() {
-  // read the state of the pushbutton value:
-  buttonState = digitalRead(buttonPin);
-
-  // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
-  if (buttonState == HIGH) {
-    // turn LED on:
-    digitalWrite(ledPin, HIGH);
-  } else {
-    // turn LED off:
-    digitalWrite(ledPin, LOW);
+// loop() runs over and over again forever
+void  loop()
+{
+  if ((millis() - lastDebounceTime) >= DEBOUNCE_DELAY) {
+    int buttonState = digitalRead(BUTTON);
+    if (buttonState != lastButtonState)
+    {
+      lastButtonState = buttonState;
+      lastDebounceTime = millis();
+      if (buttonState == HIGH) runState = !runState;
+    }
   }
+  digitalWrite(LED,  runState);
 }
