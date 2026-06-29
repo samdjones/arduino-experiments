@@ -39,12 +39,19 @@ To upload and then open the Arduino CLI serial monitor automatically, add `--mon
 ./build.sh <project_directory> --upload --monitor
 ```
 
+To compile without a connected board, pass `--fqbn` with the fully qualified board name:
+
+```bash
+./build.sh <project_directory> --fqbn arduino:avr:leonardo
+```
+
 ### Examples
 
 ```bash
 ./build.sh blink
 ./build.sh servo --upload
 ./build.sh robogekko --upload --monitor
+./build.sh echo --fqbn arduino:avr:leonardo
 ```
 
 If a project directory contains multiple `.ino` files, the script will stop and ask you to simplify it to a single sketch.
