@@ -56,3 +56,4 @@ To compile without a connected board, pass `--fqbn` with the fully qualified boa
 
 If a project directory contains multiple `.ino` files, the script will stop and ask you to simplify it to a single sketch.
 
+-
