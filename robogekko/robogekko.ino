@@ -42,7 +42,10 @@ void buildWalk() {
 
 void setup() {
   // Start serial for debugging and command input
-  Serial.begin(115200);
+  Serial.begin(9600); // Set to 9600 for Serial Monitor matching
+  while (!Serial) {
+    ;
+  }
 
   // configServo(servoIndex, pin, minPulse, maxPulse, restPos)
   seq.configServo(0,  9,  10, 170, 90);

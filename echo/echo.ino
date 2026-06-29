@@ -30,7 +30,10 @@ const size_t BUFFER_SIZE = 64;
 char inputBuffer[BUFFER_SIZE];
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(9600); // Set to 9600 for Serial Monitor matching
+  while (!Serial) {
+    ;
+  }
   // Some boards require waiting for the USB serial connection
   // (Leonardo, Micro). On UNO this returns immediately.
   unsigned long start = millis();

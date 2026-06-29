@@ -44,7 +44,7 @@ void buildWalk() {
 }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600); // Set to 9600 for Serial Monitor matching
 
   seq.configServo(0,  2,  30, 150, 90);
   seq.configServo(1,  3,  45, 135, 90);

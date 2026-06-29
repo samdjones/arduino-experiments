@@ -15,7 +15,10 @@ unsigned long eventCounter = 0;
 // setup() runs once when you press reset or power the board
 void  setup()
 {
-  Serial.begin(9600);
+  Serial.begin(9600); // Set to 9600 for Serial Monitor matching
+  while (!Serial) {
+    ;
+  }
   pinMode(BUTTON, INPUT);
   pinMode(LED, OUTPUT);
   lastRawButtonState = digitalRead(BUTTON);

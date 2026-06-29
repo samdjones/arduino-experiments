@@ -49,6 +49,7 @@ if [ ! -d "$project_dir" ]; then
   exit 1
 fi
 
+project_dir=$(cd "$project_dir" && pwd)
 cd "$project_dir"
 
 # Find single INO file in current directory
@@ -63,6 +64,7 @@ if [ "$ino_count" -gt 1 ]; then
   exit 1
 fi
 ino_file=$(ls *.ino)
+serial_baud=9600
 
 # Discover board info from arduino-cli
 if ! command -v arduino-cli >/dev/null 2>&1; then
@@ -114,16 +116,28 @@ fi
 
 echo "Detected board: $fqbn on port $port"
 
+library_args=()
+while IFS= read -r lib_dir; do
+  library_args+=(--library "$lib_dir")
+done < <(find "$project_dir" -type f -name library.properties -print | while read -r prop_path; do dirname "$prop_path"; done | sort -u)
+
+if [ ${#library_args[@]} -eq 0 ]; then
+  library_args+=(--library "$project_dir")
+fi
+
 echo "Compiling $ino_file"
-arduino-cli compile --verbose --fqbn "$fqbn" --libraries "$project_dir" "$ino_file"
+compile_cmd=(arduino-cli compile --verbose --fqbn "$fqbn")
+compile_cmd+=("${library_args[@]}")
+compile_cmd+=("$ino_file")
+"${compile_cmd[@]}"
 
 if [ "$upload" = true ]; then
   echo "Uploading $ino_file to $fqbn on $port"
   arduino-cli upload --port "$port" --fqbn "$fqbn" "$ino_file"
   
   if [ "$monitor" = true ]; then
-    echo "Opening serial monitor on $port..."
-    arduino-cli monitor --port "$port"
+    echo "Opening serial monitor on $port at $serial_baud baud..."
+    arduino-cli monitor --port "$port" --config "$serial_baud"
   fi
 else
   echo "Build complete; skipping upload. Re-run with --upload to flash the board."
