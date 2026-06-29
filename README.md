@@ -17,7 +17,7 @@ Use the helper script at the repository root to compile and upload a sketch from
 From the repository root, run:
 
 ```bash
-./build.sh <project_directory>
+./build.sh sketches/<project_directory>
 ```
 
 The script will:
@@ -30,28 +30,28 @@ The script will:
 To upload the compiled sketch to the board, add `--upload`:
 
 ```bash
-./build.sh <project_directory> --upload
+./build.sh sketches/<project_directory> --upload
 ```
 
 To upload and then open the Arduino CLI serial monitor automatically, add `--monitor`:
 
 ```bash
-./build.sh <project_directory> --upload --monitor
+./build.sh sketches/<project_directory> --upload --monitor
 ```
 
 To compile without a connected board, pass `--fqbn` with the fully qualified board name:
 
 ```bash
-./build.sh <project_directory> --fqbn arduino:avr:leonardo
+./build.sh sketches/<project_directory> --fqbn arduino:avr:leonardo
 ```
 
 ### Examples
 
 ```bash
-./build.sh blink
-./build.sh servo --upload
-./build.sh robogekko --upload --monitor
-./build.sh echo --fqbn arduino:avr:leonardo
+./build.sh sketches/blink
+./build.sh sketches/servo --upload
+./build.sh sketches/robogekko --upload --monitor
+./build.sh sketches/echo --fqbn arduino:avr:leonardo
 ```
 
 If a project directory contains multiple `.ino` files, the script will stop and ask you to simplify it to a single sketch.
