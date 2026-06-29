@@ -2,12 +2,39 @@
 
 set -euo pipefail
 
-if [ $# -ne 1 ]; then
-  echo "Usage: $0 <project_directory>"
+usage() {
+  echo "Usage: $0 <project_directory> [--upload]"
+  echo "By default the script only compiles the sketch."
+  echo "Pass --upload to also upload it to the connected board."
+}
+
+upload=false
+
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+  usage
   exit 1
 fi
 
 project_dir="$1"
+if [ "$project_dir" = "--upload" ]; then
+  echo "ERROR: Missing project directory."
+  usage
+  exit 1
+fi
+
+if [ $# -eq 2 ]; then
+  case "$2" in
+    --upload)
+      upload=true
+      ;;
+    *)
+      echo "ERROR: Unknown argument '$2'."
+      usage
+      exit 1
+      ;;
+  esac
+fi
+
 if [ ! -d "$project_dir" ]; then
   echo "ERROR: Directory '$project_dir' does not exist."
   exit 1
@@ -81,6 +108,10 @@ echo "Detected board: $fqbn on port $port"
 echo "Compiling $ino_file"
 arduino-cli compile --verbose --fqbn "$fqbn" --libraries "$project_dir" "$ino_file"
 
-echo "Uploading $ino_file to $fqbn on $port"
-arduino-cli upload --port "$port" --fqbn "$fqbn" "$ino_file"
+if [ "$upload" = true ]; then
+  echo "Uploading $ino_file to $fqbn on $port"
+  arduino-cli upload --port "$port" --fqbn "$fqbn" "$ino_file"
+else
+  echo "Build complete; skipping upload. Re-run with --upload to flash the board."
+fi
 
