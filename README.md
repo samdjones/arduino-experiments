@@ -17,7 +17,7 @@ Use the helper script at the repository root to compile and upload a sketch from
 From the repository root, run:
 
 ```bash
-./build-push.sh <project_directory>
+./build.sh <project_directory>
 ```
 
 The script will:
@@ -26,14 +26,25 @@ The script will:
 - require exactly one `.ino` file in that directory
 - detect the connected board and serial port with `arduino-cli`
 - compile the sketch
-- upload it to the detected board
+
+To upload the compiled sketch to the board, add `--upload`:
+
+```bash
+./build.sh <project_directory> --upload
+```
+
+To upload and then open the Arduino CLI serial monitor automatically, add `--monitor`:
+
+```bash
+./build.sh <project_directory> --upload --monitor
+```
 
 ### Examples
 
 ```bash
-./build-push.sh blink
-./build-push.sh servo
-./build-push.sh robogekko
+./build.sh blink
+./build.sh servo --upload
+./build.sh robogekko --upload --monitor
 ```
 
 If a project directory contains multiple `.ino` files, the script will stop and ask you to simplify it to a single sketch.

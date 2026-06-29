@@ -3,37 +3,46 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $0 <project_directory> [--upload]"
+  echo "Usage: $0 <project_directory> [--upload] [--monitor]"
   echo "By default the script only compiles the sketch."
   echo "Pass --upload to also upload it to the connected board."
+  echo "Pass --monitor to open the serial monitor after upload."
+  echo "Flags can be combined: $0 echo --upload --monitor"
 }
 
 upload=false
+monitor=false
 
-if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+if [ $# -lt 1 ]; then
   usage
   exit 1
 fi
 
 project_dir="$1"
-if [ "$project_dir" = "--upload" ]; then
+if [ "$project_dir" = "--upload" ] || [ "$project_dir" = "--monitor" ]; then
   echo "ERROR: Missing project directory."
   usage
   exit 1
 fi
 
-if [ $# -eq 2 ]; then
-  case "$2" in
+# Parse remaining arguments
+shift
+while [ $# -gt 0 ]; do
+  case "$1" in
     --upload)
       upload=true
       ;;
+    --monitor)
+      monitor=true
+      ;;
     *)
-      echo "ERROR: Unknown argument '$2'."
+      echo "ERROR: Unknown argument '$1'."
       usage
       exit 1
       ;;
   esac
-fi
+  shift
+done
 
 if [ ! -d "$project_dir" ]; then
   echo "ERROR: Directory '$project_dir' does not exist."
@@ -111,6 +120,11 @@ arduino-cli compile --verbose --fqbn "$fqbn" --libraries "$project_dir" "$ino_fi
 if [ "$upload" = true ]; then
   echo "Uploading $ino_file to $fqbn on $port"
   arduino-cli upload --port "$port" --fqbn "$fqbn" "$ino_file"
+  
+  if [ "$monitor" = true ]; then
+    echo "Opening serial monitor on $port..."
+    arduino-cli monitor --port "$port"
+  fi
 else
   echo "Build complete; skipping upload. Re-run with --upload to flash the board."
 fi
